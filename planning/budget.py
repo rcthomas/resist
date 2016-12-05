@@ -60,6 +60,7 @@ class Budget(object):
         output += "tau:       {}\n".format(self._formatted_size(self.tau_bytes))
         output += "src:       {}\n".format(self._formatted_size(self.src_bytes))
         output += "src rays:  {}\n".format(self._formatted_size(self.src_rays_bytes))
+        output += "angles:    {}\n".format(self._formatted_size(self.angles_bytes))
         output += "----------------------\n"
         output += "total:     {}\n".format(self._formatted_size(self.total_bytes))
         return output
@@ -71,6 +72,7 @@ class Budget(object):
                 self.bins_bytes +
                 self.tau_bytes +
                 self.src_bytes +
+                self.angles_bytes +
                 self.src_rays_bytes)
 
     @lazy
@@ -156,6 +158,12 @@ class Budget(object):
         """Number of angles used to estimate source function (mean intensity) at
         each grid point."""
         return 32
+
+    @lazy
+    def angles_bytes(self):
+        """Angle footprint.  Determined by number of radius grid points and
+        number of angles per radius grid point."""
+        return self.num_radii * self.num_angles * self.bytes_per_real
 
     def _formatted_size(self, size_bytes):
         """Format size in bytes in human-readable units."""
