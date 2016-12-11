@@ -1,101 +1,74 @@
 
 #include <assert.h>
-#include <stdio.h>
 
 #include "resist-config.h"
 
-void resist_config_init_default(struct resist_config_t **config)
+void resist_config_init_default(struct resist_config_t** cfg)
 {
-    resist_config_init(config, 10.0, 1.0e6, 0.3, 60.0, 0.1, 32);
+    resist_config_init(cfg, 10.0, 1.0e6, 0.3, 60.0, 0.1, 32);
 }
 
-void resist_config_init_json(struct resist_config_t **config)
+void resist_config_init_json(struct resist_config_t** cfg)
 {
     /* TODO */
 }
 
-void
-resist_config_init(struct resist_config_t **config,
-                   real_t wavelength_min,
-                   real_t wavelength_max,
-                   real_t wavelength_step,
-                   real_t velocity_max,
-                   real_t velocity_step,
-                   size_t angle_count)
+void resist_config_init(struct resist_config_t** cfg,
+                        real_t min_wl,
+                        real_t max_wl,
+                        real_t wl_step,
+                        real_t max_vr,
+                        real_t vr_step,
+                        size_t mu_per_vr)
 {
-    *config =
-        (struct resist_config_t *)malloc(sizeof(struct resist_config_t));
-
-    _resist_config_init_wavelength_params(*config,
-                                          wavelength_min, wavelength_max,
-                                          wavelength_step);
-
-    _resist_config_init_velocity_params(*config, velocity_max,
-                                        velocity_step);
-
-    _resist_config_init_angle_params(*config, angle_count);
+    *cfg = (struct resist_config_t *)malloc(sizeof(struct resist_config_t));
+    _resist_config_init(*cfg, min_wl, max_wl, wl_step, max_vr, vr_step,
+                        mu_per_vr);
 }
 
-void resist_config_finalize(struct resist_config_t *config)
+void resist_config_free(struct resist_config_t* cfg)
 {
-    free(config);
-    config = NULL;
+    free(cfg);
+    cfg = NULL;
 }
 
-void resist_config_output(struct resist_config_t *config)
+void _resist_config_init(struct resist_config_t* cfg,
+                         real_t min_wl,
+                         real_t max_wl,
+                         real_t wl_step,
+                         real_t max_vr,
+                         real_t vr_step,
+                         size_t mu_per_vr)
 {
-    /* TODO Make this a char buffer formatted with snprintf instead. */
-    /* TODO Or do we bother with logging */
-    printf("resist config\n");
-    printf("    wavelength min=%f max=%f step=%f\n",
-           config->wavelength_min, config->wavelength_max,
-           config->wavelength_step);
-    printf("    velocity   max=%f step=%f\n", config->velocity_max,
-           config->velocity_step);
-    printf("    angle      count=%zu\n", config->angle_count);
-}
 
-void _resist_config_init_wavelength_params(struct resist_config_t *config,
-                                           real_t wavelength_min,
-                                           real_t wavelength_max,
-                                           real_t wavelength_step)
-{
     /* Bluest wavelength line loaded should be positive. */
 
-    assert(wavelength_min > 0.0);
-    config->wavelength_min = wavelength_min;
+    assert(min_wl > 0.0);
+    cfg->min_wl = min_wl;
 
     /* Reddest wavelength line loaded should be greater than bluest. */
 
-    assert(wavelength_max > config->wavelength_min);
-    config->wavelength_max = wavelength_max;
+    assert(max_wl > cfg->min_wl);
+    cfg->max_wl = max_wl;
 
     /* Wavelength bin width should be positive. */
 
-    assert(wavelength_step > 0.0);
-    config->wavelength_step = wavelength_step;
-}
+    assert(wl_step > 0.0);
+    cfg->wl_step = wl_step;
 
-void _resist_config_init_velocity_params(struct resist_config_t *config,
-                                         real_t velocity_max,
-                                         real_t velocity_step)
-{
     /* Fastest ejecta velocity should be positive. */
 
-    assert(velocity_max > 0.0);
-    config->velocity_max = velocity_max;
+    assert(max_vr > 0.0);
+    cfg->max_vr = max_vr;
 
     /* Ejecta velocity grid step should be positive. */
 
-    assert(velocity_step > 0.0);
-    config->velocity_step = velocity_step;
-}
+    assert(vr_step > 0.0);
+    cfg->vr_step = vr_step;
 
-void _resist_config_init_angle_params(struct resist_config_t *config,
-                                      real_t angle_count)
-{
     /* Angles per ejecta velocity grid point should be positive. */
 
-    assert(angle_count > 0);
-    config->angle_count = angle_count;
+    assert(mu_per_vr > 0);
+    cfg->mu_per_vr = mu_per_vr;
+
 }

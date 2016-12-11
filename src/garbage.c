@@ -36,9 +36,11 @@ void initialize(struct support_t* support,
                 real v_step,
                 num_angles)
 {
+
     initialize_bins(support, min_wl, max_wl, bin_step);
     initialize_radii(support, min_v, max_v, v_step);
     initialize_rays(support, num_angles);
+
 }
 
 void initialize_bins(struct support_t* support,
@@ -46,6 +48,7 @@ void initialize_bins(struct support_t* support,
                      real max_wl,
                      real bin_step)
 {
+
     /* Minimum wavelength in Angstroms should be positive. */
 
     assert(min_wl > 0.0);
@@ -77,6 +80,7 @@ void initialize_bins(struct support_t* support,
     real start = 0.5 * support->min_wl * (1.0 + doppler_factor); /* Hmmm have to cast the literals? */
     for (size_t i = 0; i < support->num_bins; i++)
         support->bins[i] = start * pow(doppler_factor, i);
+
 }
 
 void initialize_radii(struct support_t* support,
@@ -84,6 +88,7 @@ void initialize_radii(struct support_t* support,
                       real max_v,
                       real v_step)
 {
+
     /* Minimum velocity in Mm/s should be non-negative. */
 
     assert(min_v >= 0.0);
@@ -113,6 +118,7 @@ void initialize_radii(struct support_t* support,
 
 //  for(size_t i = 0; i < support->num_radii; i++)
 //      support->radii[i] = support->min_v + i * support->v_step;
+
 }
 
 void initialize_rays(struct support_t* support,

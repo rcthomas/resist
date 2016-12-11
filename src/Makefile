@@ -1,13 +1,15 @@
 
-CC=gcc
+CC=cc
 
 default: resist-mini-app.x
 
-resist-mini-app.x: resist-mini-app.o resist-config.o
-	$(CC) resist-mini-app.o resist-config.o -o $@
+RESIST_MINI_APP_OBJ=resist-mini-app.o resist-config.o resist-context.o
+
+resist-mini-app.x: $(RESIST_MINI_APP_OBJ)
+	$(CC) $(RESIST_MINI_APP_OBJ) -o $@
 
 %.o: %.c
-	$(CC) -c $< -o $@
+	$(CC) -O0 -Wall -Werror -c $< -o $@
 
 format: 
 	uncrustify -c uncrustify.cfg --check *.c *.h
@@ -17,4 +19,5 @@ realclean: clean
 
 clean:
 	rm -rf *.o
+	rm -rf *.uncrustify
 
