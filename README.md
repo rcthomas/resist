@@ -8,6 +8,14 @@
 * @rcthomas is the only person with write access to the repository.
 * @rcthomas shall wait for comment from another person before merging his own pull requests.
 * Every commit should compile and run correctly.
+* Commits should be logically disjoint. For example, changing a variable name
+  and adding a new header should be in separate commits. There is some room for
+  interpretation in this regard, which will be addressed during the pull request.
+* "No-op" commits are allowed, but should be restricted to comments and code
+  style fixes. A commit which introduces a new source file should also include
+  the calls to its functions elsewhere in the code.
+* Commit messages should follow the style described
+  [here](http://chris.beams.io/posts/git-commit/).
 * "Work-in-progress" commits do not belong anywhere in this repository.
 * Compilation with -Wall -Werror (or equivalent for non-GCC compilers) should succeed on every commit.
 * Code style is enforced before commit and compliance is required before merge.
