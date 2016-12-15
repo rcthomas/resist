@@ -2,6 +2,7 @@
 #ifndef RESIST_MEMORY_H
 #define RESIST_MEMORY_H
 
-/* Place awesome macro here and replace all the mallocs (and free's?). */
+void* resist_malloc(size_t n);
+void* resist_free(void* p);
 
 #endif /* RESIST_MEMORY_H */

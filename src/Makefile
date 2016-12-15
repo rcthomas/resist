@@ -9,7 +9,7 @@ CC=cc
 
 default: resist-mini-app.x
 
-RESIST_MINI_APP_OBJ=resist-mini-app.o resist-config.o resist-context.o
+RESIST_MINI_APP_OBJ=resist-mini-app.o resist-config.o resist-context.o resist-memory.o
 
 ifeq ($(USE_HBM),TRUE)
   LDFLAGS=-dynamic -lmemkind
