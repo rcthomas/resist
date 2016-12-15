@@ -1,0 +1,3 @@
+- Make the cache line size a macro in the Makefile
+- Write a unit test to compare performance of aligned vs unaligned array
+  arithmetic.
