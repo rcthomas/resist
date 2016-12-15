@@ -6,27 +6,29 @@
 #include "resist-config.h"
 #include "resist-constants.h"
 #include "resist-context.h"
+#include "resist-memory.h"
 
 void resist_context_init(struct resist_context_t** ctx,
                          struct resist_config_t* cfg)
 {
-    *ctx = (struct resist_context_t*)malloc(sizeof(struct resist_context_t));
+    *ctx =
+        (struct resist_context_t*)resist_malloc(sizeof(struct resist_context_t));
     _resist_context_init(*ctx, cfg);
 }
 
 void resist_context_free(struct resist_context_t* ctx)
 {
 
-    free(ctx->mu);
+    resist_free(ctx->mu);
     ctx->mu = NULL;
 
-    free(ctx->vr);
+    resist_free(ctx->vr);
     ctx->vr = NULL;
 
-    free(ctx->wl);
+    resist_free(ctx->wl);
     ctx->wl = NULL;
 
-    free(ctx);
+    resist_free(ctx);
     ctx = NULL;
 
 }
@@ -65,7 +67,7 @@ void _resist_context_init(struct resist_context_t* ctx,
 
     /* Allocate wavelength bins. */
 
-    ctx->wl = (real_t*)malloc(ctx->wl_count * sizeof(real_t));
+    ctx->wl = (real_t*)resist_malloc(ctx->wl_count * sizeof(real_t));
     assert(ctx->wl);
 
     /* Assign wavelengths to bins. */
@@ -86,7 +88,7 @@ void _resist_context_init(struct resist_context_t* ctx,
 
     /* Allocate velocity radii but defer definition. */
 
-    ctx->vr = (real_t*)malloc(ctx->vr_count * sizeof(real_t));
+    ctx->vr = (real_t*)resist_malloc(ctx->vr_count * sizeof(real_t));
     assert(ctx->vr);
 
     /* Copy angle parameters from config directly. */
@@ -99,7 +101,7 @@ void _resist_context_init(struct resist_context_t* ctx,
 
     /* Allocate angle but defer definition. */
 
-    ctx->mu = (real_t*)malloc(ctx->mu_count * sizeof(real_t));
+    ctx->mu = (real_t*)resist_malloc(ctx->mu_count * sizeof(real_t));
     assert(ctx->mu);
 
 }
