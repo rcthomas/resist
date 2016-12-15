@@ -1,15 +1,31 @@
+# To use high-bandwidth memory on Cori at NERSC (2nd-gen Intel Xeon Phi,
+# "Knights Landing"), one needs to load the "memkind" module, and also one must
+# link dynamically. If you try to link statically with memkind you will get
+# lots of errors.
+
+USE_HBM=TRUE
 
 CC=cc
 
 default: resist-mini-app.x
 
-RESIST_MINI_APP_OBJ=resist-mini-app.o resist-config.o resist-context.o
+RESIST_MINI_APP_OBJ=resist-mini-app.o resist-config.o resist-context.o resist-memory.o
+
+ifeq ($(USE_HBM),TRUE)
+  LDFLAGS=-dynamic -lmemkind
+  CFLAGS=-DUSE_HBM=TRUE
+endif
+
+CFLAGS+=-O0 -Wall -Werror
+
+# Resist uses a number of C99 features.
+CFLAGS+=-std=c99
 
 resist-mini-app.x: $(RESIST_MINI_APP_OBJ)
-	$(CC) $(RESIST_MINI_APP_OBJ) -o $@
+	$(CC) $(RESIST_MINI_APP_OBJ) -o $@ $(LDFLAGS)
 
 %.o: %.c
-	$(CC) -O0 -Wall -Werror -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 format: 
 	uncrustify -c uncrustify.cfg --check *.c *.h

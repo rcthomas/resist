@@ -3,6 +3,7 @@
 
 #include "resist-config.h"
 #include "resist-context.h"
+#include "resist-memory.h"
 
 int resist_mini_app(int argc,
                     char* argv[]);
