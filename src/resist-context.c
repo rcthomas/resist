@@ -66,7 +66,7 @@ void _resist_context_init(struct resist_context_t* ctx,
     /* Allocate wavelength bins. */
 
     ctx->wl = (real_t*)malloc(ctx->wl_count * sizeof(real_t));
-    assert(ctx->wl != NULL);
+    assert(ctx->wl);
 
     /* Assign wavelengths to bins. */
 
@@ -87,7 +87,7 @@ void _resist_context_init(struct resist_context_t* ctx,
     /* Allocate velocity radii but defer definition. */
 
     ctx->vr = (real_t*)malloc(ctx->vr_count * sizeof(real_t));
-    assert(ctx->vr != NULL);
+    assert(ctx->vr);
 
     /* Copy angle parameters from config directly. */
 
@@ -100,6 +100,6 @@ void _resist_context_init(struct resist_context_t* ctx,
     /* Allocate angle but defer definition. */
 
     ctx->mu = (real_t*)malloc(ctx->mu_count * sizeof(real_t));
-    assert(ctx->mu != NULL);
+    assert(ctx->mu);
 
 }
