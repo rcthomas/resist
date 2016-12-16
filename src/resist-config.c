@@ -2,6 +2,7 @@
 #include <assert.h>
 
 #include "resist-config.h"
+#include "resist-memory.h"
 
 void resist_config_init_default(struct resist_config_t** cfg)
 {
@@ -21,14 +22,15 @@ void resist_config_init(struct resist_config_t** cfg,
                         real_t vr_step,
                         size_t mu_per_vr)
 {
-    *cfg = (struct resist_config_t *)malloc(sizeof(struct resist_config_t));
+    *cfg = (struct resist_config_t *)resist_malloc(
+        sizeof(struct resist_config_t));
     _resist_config_init(*cfg, min_wl, max_wl, wl_step, max_vr, vr_step,
                         mu_per_vr);
 }
 
 void resist_config_free(struct resist_config_t* cfg)
 {
-    free(cfg);
+    resist_free(cfg);
     cfg = NULL;
 }
 
