@@ -16,7 +16,7 @@ ifeq ($(USE_HBM),TRUE)
   CFLAGS=-DUSE_HBM=TRUE
 endif
 
-CFLAGS+=-O0 -Wall -Werror
+CFLAGS+=-O0 -g -Wall -Werror
 
 # Resist uses a number of C99 features.
 CFLAGS+=-std=c99
