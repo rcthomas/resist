@@ -3,7 +3,7 @@
 # link dynamically. If you try to link statically with memkind you will get
 # lots of errors.
 
-USE_HBM=TRUE
+USE_HBM=FALSE
 
 CC=cc
 
