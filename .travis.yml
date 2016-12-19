@@ -1,4 +1,7 @@
-language: c
+before_install:
+    - sudo apt-get -qq update
+    - sudo apt-get install -y uncrustify
 compiler:
-        - clang
+    - clang
+language: c
 script: cd src && make format && make
