@@ -2,6 +2,7 @@ before_install:
     - sudo apt-get -qq update
 compiler:
     - clang
+    - gcc
 install:
     - wget https://github.com/uncrustify/uncrustify/archive/uncrustify-0.61.tar.gz -O /tmp/uncrustify.tar.gz
     - tar zxvf /tmp/uncrustify.tar.gz
