@@ -1,7 +1,10 @@
 before_install:
     - sudo apt-get -qq update
-    - sudo apt-get install -y uncrustify
 compiler:
     - clang
+install:
+    - wget https://github.com/uncrustify/uncrustify/archive/uncrustify-0.61.tar.gz -O /tmp/uncrustify.tar.gz
+    - tar zxvf /tmp/uncrustify.tar.gz
+    - pushd uncrustify-uncrustify-0.61 && ./configure --prefix=/usr && make && sudo make install && popd 
 language: c
 script: cd src && make format && make
