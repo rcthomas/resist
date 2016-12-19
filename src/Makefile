@@ -21,6 +21,8 @@ CFLAGS+=-O0 -g -Wall -Werror
 # Resist uses a number of C99 features.
 CFLAGS+=-std=c99
 
+LDFLAGS+=-lm
+
 resist-mini-app.x: $(RESIST_MINI_APP_OBJ)
 	$(CC) $(RESIST_MINI_APP_OBJ) -o $@ $(LDFLAGS)
 
