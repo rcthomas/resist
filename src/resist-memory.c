@@ -20,18 +20,22 @@ void* resist_malloc(size_t n)
 {
 
     const size_t padded_size = n + CACHE_LINE_SIZE;
-    void* p;
+    void* p_base; // holds requested plus padded memory
+    void* p; // points to aligned address in padded array
 
 #ifdef USE_HBM
-    p = hbw_malloc(padded_size);
+    p_base = hbw_malloc(padded_size * sizeof(void*));
 #else
-    p = malloc(padded_size);
+    p_base = malloc(padded_size * sizeof(void*));
 #endif
 
-    assert(p);
+    assert(p_base);
 
     // Align the memory to the cache line boundary.
-    while ((uintptr_t)p & (uintptr_t)(CACHE_LINE_SIZE - 1)) p++;
+    p =
+        (void*)((uintptr_t)(p_base + CACHE_LINE_SIZE) &
+                (~((uintptr_t)CACHE_LINE_SIZE - 1)));
+    *((void**)p - 1) = p_base;
 
     return p;
 }
@@ -40,9 +44,9 @@ void resist_free(void* p)
 {
 
 #ifdef USE_HBM
-    hbw_free(p);
+    hbw_free(*((void**)p - 1));
 #else
-    free(p);
+    free(*((void**)p - 1));
 #endif
 
 }
