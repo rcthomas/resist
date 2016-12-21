@@ -3,6 +3,8 @@
 # link dynamically. If you try to link statically with memkind you will get
 # lots of errors.
 
+SHELL=/bin/bash
+
 USE_HBM=FALSE
 
 default: resist-mini-app.x
@@ -28,7 +30,12 @@ resist-mini-app.x: $(RESIST_MINI_APP_OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 format: 
-	uncrustify -c uncrustify.cfg --check *.c *.h
+	@set -o pipefail; uncrustify -c uncrustify.cfg --check *.c *.h 2>&1 \
+        | GREP_COLOR='01;32' egrep --color=always 'PASS|$$' \
+        | GREP_COLORS='01;31' egrep --color=always 'FAIL|$$' \
+
+reformat:
+	uncrustify -c uncrustify.cfg *.c *.h --no-backup --mtime
 
 realclean: clean
 	rm -rf *.x
