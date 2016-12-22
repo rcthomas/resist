@@ -28,6 +28,9 @@ struct resist_context_t {
     size_t mu_count;        /* Total number of angles.                      */
     real_t* mu;             /* Angle grid, cosines.                         */
 
+    real_t* tau;            /* Sobolev opacity bins.                        */
+    real_t* src;            /* Source function.                             */
+
 };
 
 /* Allocate and initialize app context from config. */
