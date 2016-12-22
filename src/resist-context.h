@@ -13,19 +13,20 @@ struct resist_context_t {
     real_t max_wl;          /* Reddest wavelength line loaded, AA.          */
     real_t wl_step;         /* Wavelength bin width, Mm/s.                  */
 
-    size_t wl_count;
-    real_t* wl;
+    size_t wl_count;        /* Number of wavelength bins.                   */
+    real_t* wl;             /* Wavelength bins, blue edge, AA.              */
 
     real_t max_vr;          /* Fastest ejecta velocity considered, Mm/s.    */
     real_t vr_step;         /* Ejecta velocity grid step, Mm/s.             */
 
-    size_t vr_count;
-    real_t* vr;
+    size_t vr_count;        /* Velocity grid size including ghost cells.    */
+    size_t real_vr_count;   /* Non-ghost cell velocity grid size.           */
+    real_t* vr;             /* Velocity grid, Mm/s.                         */
 
     size_t mu_per_vr;       /* Angles per ejecta velocity grid point.       */
 
-    size_t mu_count;
-    real_t* mu;
+    size_t mu_count;        /* Total number of angles.                      */
+    real_t* mu;             /* Angle grid, cosines.                         */
 
 };
 
