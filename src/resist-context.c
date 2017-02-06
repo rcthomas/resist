@@ -24,6 +24,9 @@ void resist_context_free(struct resist_context_t* ctx)
     resist_free(ctx->tau);
     ctx->tau = NULL;
 
+    resist_free(ctx->in);
+    ctx->in = NULL;
+
     resist_free(ctx->mu);
     ctx->mu = NULL;
 
@@ -123,6 +126,10 @@ void _resist_context_init(struct resist_context_t* ctx,
     /* Allocate angle but defer definition. */
 
     ctx->mu = (real_t*)resist_malloc(ctx->mu_count * sizeof(real_t));
+
+    /* Allocate specific intensities for real velocity grid points. */
+
+    ctx->in = (real_t*)resist_malloc(ctx->mu_count * sizeof(real_t));
 
     /* Allocate Sobolev opacity bins, including ghost values. */
 
