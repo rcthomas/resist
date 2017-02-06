@@ -3,6 +3,7 @@
 #define RESIST_CONTEXT_H
 
 #include "resist-config.h"
+#include "resist-setup.h"
 #include "resist-types.h"
 
 /* Application context type. */
@@ -41,6 +42,11 @@ void resist_context_init(struct resist_context_t** ctx,
 /* Tear down context. */
 
 void resist_context_free(struct resist_context_t* ctx);
+
+/* Compute. */
+
+void resist_context_compute(struct resist_context_t* ctx,
+                            struct resist_setup_t* setup);
 
 /* TODO: This should return snprintf'ed report or decide on logging. */
 

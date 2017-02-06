@@ -38,6 +38,11 @@ void resist_context_free(struct resist_context_t* ctx)
 
 }
 
+void resist_context_compute(struct resist_context_t* ctx,
+                            struct resist_setup_t* stp)
+{
+}
+
 void resist_context_output(struct resist_context_t* ctx)
 {
 
