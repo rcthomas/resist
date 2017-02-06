@@ -19,6 +19,12 @@ void resist_context_init(struct resist_context_t** ctx,
 void resist_context_free(struct resist_context_t* ctx)
 {
 
+    resist_free(ctx->src);
+    ctx->src = NULL;
+
+    resist_free(ctx->tau);
+    ctx->tau = NULL;
+
     resist_free(ctx->mu);
     ctx->mu = NULL;
 
@@ -116,5 +122,17 @@ void _resist_context_init(struct resist_context_t* ctx,
 
     ctx->mu = (real_t*)resist_malloc(ctx->mu_count * sizeof(real_t));
     assert(ctx->mu);
+
+    /* Allocate Sobolev opacity bins, including ghost values. */
+
+    ctx->tau = (real_t*)resist_malloc(ctx->wl_count * ctx->vr_count *
+                                      sizeof(real_t));
+    assert(ctx->tau);
+
+    /* Allocate source function values, including ghost values. */
+
+    ctx->src = (real_t*)resist_malloc(ctx->wl_count * ctx->vr_count *
+                                      sizeof(real_t));
+    assert(ctx->src);
 
 }
