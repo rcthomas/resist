@@ -19,25 +19,18 @@ void resist_context_free(struct resist_context_t* ctx)
 {
 
     resist_free(ctx->src);
-    ctx->src = NULL;
 
     resist_free(ctx->tau);
-    ctx->tau = NULL;
 
     resist_free(ctx->in);
-    ctx->in = NULL;
 
     resist_free(ctx->mu);
-    ctx->mu = NULL;
 
     resist_free(ctx->vr);
-    ctx->vr = NULL;
 
     resist_free(ctx->wl);
-    ctx->wl = NULL;
 
     resist_free(ctx);
-    ctx = NULL;
 
 }
 

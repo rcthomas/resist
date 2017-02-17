@@ -49,4 +49,5 @@ void resist_free(void* p)
     free(*((void**)p - 1));
 #endif
 
+    p = NULL;
 }
