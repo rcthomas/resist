@@ -19,5 +19,4 @@ void resist_setup_init(struct resist_setup_t** stp)
 void resist_setup_free(struct resist_setup_t* stp)
 {
     resist_free(stp);
-    stp = NULL;
 }

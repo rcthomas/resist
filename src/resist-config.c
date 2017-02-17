@@ -31,7 +31,6 @@ void resist_config_init(struct resist_config_t** cfg,
 void resist_config_free(struct resist_config_t* cfg)
 {
     resist_free(cfg);
-    cfg = NULL;
 }
 
 void _resist_config_init(struct resist_config_t* cfg,
