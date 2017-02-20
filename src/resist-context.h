@@ -10,9 +10,13 @@
 
 struct resist_context_t {
 
-    real_t min_wl;          /* Bluest wavelength line loaded, AA.           */
-    real_t max_wl;          /* Reddest wavelength line loaded, AA.          */
-    real_t wl_step;         /* Wavelength bin width, Mm/s.                  */
+    real_t spec_wl_min;     /* Bluest spectrum wavelength, AA.              */
+    real_t spec_wl_max;     /* Reddest spectrum wavelength, AA.             */
+    real_t spec_wl_step;    /* Default spectrum sampling, AA.               */
+
+    real_t opac_wl_min;     /* Bluest opacity bin, AA.                      */
+    real_t opac_wl_max;     /* Reddest opacity bin, AA.                     */
+    real_t opac_wl_step;    /* Opacity bin width, Mm/s.                     */
 
     size_t wl_count;        /* Number of wavelength bins.                   */
     real_t* wl;             /* Wavelength bins, blue edge, AA.              */

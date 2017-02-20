@@ -45,8 +45,9 @@ void resist_context_output(struct resist_context_t* ctx)
     /* TODO Make this a char buffer formatted with snprintf instead. */
     /* TODO Or do we bother with logging */
     printf("resist context\n");
-    printf("    min_wl    = %10.2e  max_wl  = %10.2e  wl_step = %10f\n",
-           ctx->min_wl, ctx->max_wl, ctx->wl_step);
+    printf(
+        "    spec_wl_min = %10.2e  spec_wl_max  = %10.2e  spec_wl_step = %10f\n",
+        ctx->spec_wl_min, ctx->spec_wl_max, ctx->spec_wl_step);
     printf("    max_vr    = %10f  vr_step = %10f\n", ctx->max_vr, ctx->vr_step);
     printf("    mu_per_vr = %10zu\n", ctx->mu_per_vr);
     printf("    wl_count  = %10zu\n", ctx->wl_count);
@@ -60,16 +61,34 @@ void _resist_context_init(struct resist_context_t* ctx,
                           struct resist_config_t* cfg)
 {
 
-    /* Copy wavelength parameters from config directly. */
+    /* Copy spectrum parameters from config. */
 
-    ctx->min_wl = cfg->min_wl;
-    ctx->max_wl = cfg->max_wl;
-    ctx->wl_step = cfg->wl_step;
+    ctx->spec_wl_min = cfg->spec_wl_min;
+    ctx->spec_wl_max = cfg->spec_wl_max;
+    ctx->spec_wl_step = cfg->spec_wl_step;
 
-    /* Compute number of bins based on wavelength parameters. */
+    /* Copy opacity parameters from config. */
 
-    real_t doppler_factor = 1.0 + ctx->wl_step / c_Mms; /* precision on 1.0 */
-    ctx->wl_count = (size_t)(log(ctx->max_wl / ctx->min_wl) /
+    ctx->opac_wl_step = cfg->opac_wl_step;
+
+    /* Copy velocity parameters from config directly. */
+
+    ctx->max_vr = cfg->max_vr;
+    ctx->vr_step = cfg->vr_step;
+
+    /* Compute bounds for opacity bins.  Opacity bins start blueward of the
+       bluest spectrum wavelength allowed and stop redward of the reddest
+       spectrum wavelength allowed.  Blue limit is determined by a Doppler
+       shift corresponding to (at least) 2 * max_vr, red limit is determined
+       by a Doppler shift corresponding to just max_vr. */
+
+    ctx->opac_wl_min = ctx->spec_wl_min / (1.0 + 2.0 * ctx->max_vr / c_Mms);
+    ctx->opac_wl_max = ctx->spec_wl_max * (1.0 + ctx->max_vr / c_Mms);
+
+    /* Compute number of opacity bins based on opacity bin bounds. */
+
+    real_t doppler_factor = 1.0 + ctx->opac_wl_step / c_Mms;
+    ctx->wl_count = (size_t)(log(ctx->opac_wl_max / ctx->opac_wl_min) /
                              log(doppler_factor));
 
     /* Allocate wavelength bins. */
@@ -78,15 +97,10 @@ void _resist_context_init(struct resist_context_t* ctx,
 
     /* Assign wavelengths to bins. */
 
-    ctx->wl[0] = ctx->min_wl;
+    ctx->wl[0] = ctx->opac_wl_min;
     for (size_t i = 1; i < ctx->wl_count; i++) {
         ctx->wl[i] = ctx->wl[i - 1] * doppler_factor;
     }
-
-    /* Copy velocity parameters from config directly. */
-
-    ctx->max_vr = cfg->max_vr;
-    ctx->vr_step = cfg->vr_step;
 
     /* Compute number of real velocity grid points based on velocity
        parameters. */
