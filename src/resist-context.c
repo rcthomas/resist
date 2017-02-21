@@ -17,21 +17,13 @@ void resist_context_init(struct resist_context_t** ctx,
 
 void resist_context_free(struct resist_context_t* ctx)
 {
-
     resist_free(ctx->src);
-
     resist_free(ctx->tau);
-
     resist_free(ctx->in);
-
     resist_free(ctx->mu);
-
     resist_free(ctx->vr);
-
     resist_free(ctx->wl);
-
     resist_free(ctx);
-
 }
 
 void resist_context_compute(struct resist_context_t* ctx,
