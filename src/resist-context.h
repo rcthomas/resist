@@ -17,9 +17,8 @@ struct resist_context_t {
     real_t opac_wl_min;     /* Bluest opacity bin, AA.                      */
     real_t opac_wl_max;     /* Reddest opacity bin, AA.                     */
     real_t opac_wl_step;    /* Opacity bin width, Mm/s.                     */
-
-    size_t wl_count;        /* Number of wavelength bins.                   */
-    real_t* wl;             /* Wavelength bins, blue edge, AA.              */
+    size_t opac_wl_size;    /* Number of opacity bins.                      */
+    real_t* opac_wl;        /* Opacity bins, blue edge, AA.                 */
 
     real_t max_vr;          /* Fastest ejecta velocity considered, Mm/s.    */
     real_t vr_step;         /* Ejecta velocity grid step, Mm/s.             */
