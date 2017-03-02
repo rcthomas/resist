@@ -22,7 +22,7 @@ void resist_context_free(struct resist_context_t* ctx)
     resist_free(ctx->in);
     resist_free(ctx->mu);
     resist_free(ctx->vr);
-    resist_free(ctx->wl);
+    resist_free(ctx->opac_wl);
     resist_free(ctx);
 }
 
@@ -42,7 +42,7 @@ void resist_context_output(struct resist_context_t* ctx)
         ctx->spec_wl_min, ctx->spec_wl_max, ctx->spec_wl_step);
     printf("    max_vr    = %10f  vr_step = %10f\n", ctx->max_vr, ctx->vr_step);
     printf("    mu_per_vr = %10zu\n", ctx->mu_per_vr);
-    printf("    wl_count  = %10zu\n", ctx->wl_count);
+    printf("    opac_wl_size = %10zu\n", ctx->opac_wl_size);
     printf("    vr_count  = %10zu  real_vr_count = %10zu\n", ctx->vr_count,
            ctx->real_vr_count);
     printf("    mu_count  = %10zu\n", ctx->mu_count);
@@ -80,18 +80,18 @@ void _resist_context_init(struct resist_context_t* ctx,
     /* Compute number of opacity bins based on opacity bin bounds. */
 
     real_t doppler_factor = 1.0 + ctx->opac_wl_step / c_Mms;
-    ctx->wl_count = (size_t)(log(ctx->opac_wl_max / ctx->opac_wl_min) /
-                             log(doppler_factor));
+    ctx->opac_wl_size = (size_t)(log(ctx->opac_wl_max / ctx->opac_wl_min) /
+                                 log(doppler_factor));
 
     /* Allocate wavelength bins. */
 
-    ctx->wl = (real_t*)resist_malloc(ctx->wl_count * sizeof(real_t));
+    ctx->opac_wl = (real_t*)resist_malloc(ctx->opac_wl_size * sizeof(real_t));
 
     /* Assign wavelengths to bins. */
 
-    ctx->wl[0] = ctx->opac_wl_min;
-    for (size_t i = 1; i < ctx->wl_count; i++) {
-        ctx->wl[i] = ctx->wl[i - 1] * doppler_factor;
+    ctx->opac_wl[0] = ctx->opac_wl_min;
+    for (size_t i = 1; i < ctx->opac_wl_size; i++) {
+        ctx->opac_wl[i] = ctx->opac_wl[i - 1] * doppler_factor;
     }
 
     /* Compute number of real velocity grid points based on velocity
@@ -132,12 +132,12 @@ void _resist_context_init(struct resist_context_t* ctx,
 
     /* Allocate Sobolev opacity bins, including ghost values. */
 
-    ctx->tau = (real_t*)resist_malloc(ctx->wl_count * ctx->vr_count *
+    ctx->tau = (real_t*)resist_malloc(ctx->opac_wl_size * ctx->vr_count *
                                       sizeof(real_t));
 
     /* Allocate source function values, including ghost values. */
 
-    ctx->src = (real_t*)resist_malloc(ctx->wl_count * ctx->vr_count *
+    ctx->src = (real_t*)resist_malloc(ctx->opac_wl_size * ctx->vr_count *
                                       sizeof(real_t));
 
 }
