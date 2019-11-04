@@ -9,7 +9,7 @@ USE_HBM=FALSE
 
 default: resist-mini-app.x
 
-RESIST_MINI_APP_OBJ=resist-mini-app.o resist-config.o resist-context.o resist-memory.o resist-setup.o
+RESIST_MINI_APP_OBJ=resist-mini-app.o resist-config.o resist-context.o resist-memory.o resist-setup.o resist-bitmask.o
 
 ifeq ($(USE_HBM),TRUE)
   LDFLAGS=-dynamic -lmemkind
