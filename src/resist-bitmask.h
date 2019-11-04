@@ -26,8 +26,8 @@ void resist_bitmask_init(struct resist_bitmask_t** mask,
 
 /* Initialize and allocate bitmask chunks. */
 
-void _resist_bitmask_init(struct resist_bitmask_t* mask,
-                          size_t size);
+static void _resist_bitmask_init(struct resist_bitmask_t* mask,
+                                 size_t size);
 
 /* Tear down bitmask. */
 

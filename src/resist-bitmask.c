@@ -21,8 +21,8 @@ void resist_bitmask_init(struct resist_bitmask_t** mask,
     _resist_bitmask_init(*mask, size);
 }
 
-void _resist_bitmask_init(struct resist_bitmask_t* mask,
-                          size_t size)
+static void _resist_bitmask_init(struct resist_bitmask_t* mask,
+                                 size_t size)
 {
     mask->size = size;
     mask->num_chunks = mask->size / BITS_PER_CHUNK + 1;
